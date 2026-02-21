@@ -1,1 +1,71 @@
-<!-- Itt egy alma lesz a háttérben -->
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Alma</title>
+
+<style>
+  body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#e8f5e9;
+    font-family:sans-serif;
+  }
+
+  .alma{
+    position:relative;
+    width:150px;
+    height:150px;
+    background:radial-gradient(circle at 40% 35%, #ff4d4d, #b30000);
+    border-radius: 50% 50% 45% 45%;
+    cursor:pointer;
+    transition: transform 0.3s ease;
+  }
+
+  /* szár */
+  .alma::before{
+    content:"";
+    position:absolute;
+    width:10px;
+    height:40px;
+    background:#5c3a21;
+    top:-30px;
+    left:70px;
+    border-radius:4px;
+  }
+
+  /* levél */
+  .level{
+    position:absolute;
+    width:50px;
+    height:25px;
+    background:#2e7d32;
+    border-radius:50%;
+    top:-20px;
+    left:85px;
+    transform:rotate(-25deg);
+  }
+</style>
+</head>
+
+<body>
+
+<div class="alma" id="alma">
+  <div class="level"></div>
+</div>
+
+<script>
+  const alma = document.getElementById("alma");
+
+  alma.addEventListener("click", () => {
+    alma.style.transform = "rotate(" + (Math.random()*30-15) + "deg) scale(1.1)";
+    setTimeout(()=> {
+      alma.style.transform = "rotate(0deg) scale(1)";
+    }, 300);
+  });
+</script>
+
+</body>
+</html>
