@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>Szebb Alma</title>
+<title>Alma evős játék</title>
 
 <style>
 body{
@@ -11,98 +11,115 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  background:radial-gradient(circle at center,#e8f5e9,#a5d6a7);
+  background:#e8f5e9;
+  font-family:sans-serif;
   overflow:hidden;
 }
 
-/* ALMA TEST */
-.apple{
+#game{
   position:relative;
-  width:180px;
-  height:180px;
-  background:
-    radial-gradient(circle at 35% 30%, #ff8a80 0%, #d32f2f 40%, #7f0000 100%);
-  border-radius:50% 50% 45% 45%;
-  box-shadow:
-    inset -20px -30px 40px rgba(0,0,0,0.4),
-    0 20px 40px rgba(0,0,0,0.3);
-  cursor:pointer;
-  transition:transform 0.1s;
+  width:400px;
+  height:400px;
 }
 
-/* FÉNY */
-.apple::after{
-  content:"";
+.apple{
   position:absolute;
-  width:60px;
-  height:80px;
-  background:radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0));
-  border-radius:50%;
-  top:30px;
-  left:40px;
-  transform:rotate(-20deg);
-  animation:shine 3s infinite alternate;
+  width:140px;
+  height:140px;
+  background:radial-gradient(circle at 35% 30%, #ff8a80, #b71c1c);
+  border-radius:50% 50% 45% 45%;
+  box-shadow: inset -15px -20px 30px rgba(0,0,0,0.4);
+  cursor:pointer;
+  transition:transform .2s, opacity .3s;
 }
 
-/* SZÁR */
 .apple::before{
   content:"";
   position:absolute;
-  width:14px;
-  height:50px;
-  background:linear-gradient(#6d4c41,#3e2723);
-  top:-40px;
-  left:83px;
-  border-radius:6px;
+  width:12px;
+  height:40px;
+  background:#5d4037;
+  top:-30px;
+  left:64px;
+  border-radius:5px;
 }
 
-/* LEVÉL */
 .leaf{
   position:absolute;
-  width:80px;
-  height:40px;
-  background:linear-gradient(to right,#1b5e20,#66bb6a);
+  width:60px;
+  height:30px;
+  background:#2e7d32;
   border-radius:50%;
-  top:-30px;
-  left:100px;
+  top:-20px;
+  left:80px;
   transform:rotate(-35deg);
-  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3);
 }
 
-/* FÉNY PULZÁLÁS */
-@keyframes shine{
-  from{opacity:0.6;}
-  to{opacity:1;}
-}
+.bite1{ clip-path:circle(70% at 50% 50%); }
+.bite2{ clip-path:circle(60% at 55% 55%); }
+.bite3{ clip-path:circle(45% at 60% 60%); }
+.gone{ opacity:0; transform:scale(0); }
 
-/* RÁZÁS */
-@keyframes shake{
-  0%{transform:rotate(0deg);}
-  25%{transform:rotate(-5deg);}
-  50%{transform:rotate(5deg);}
-  75%{transform:rotate(-3deg);}
-  100%{transform:rotate(0deg);}
-}
-
-.shake{
-  animation:shake 0.3s;
+#score{
+  position:absolute;
+  top:10px;
+  left:10px;
+  font-size:20px;
+  font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<div class="apple" id="apple">
-  <div class="leaf"></div>
+<div id="game">
+  <div id="score">Almák megevve: 0</div>
 </div>
 
 <script>
-const apple = document.getElementById("apple");
+const game = document.getElementById("game");
+const scoreText = document.getElementById("score");
 
-apple.addEventListener("click", ()=>{
-  apple.classList.add("shake");
-  setTimeout(()=>apple.classList.remove("shake"),300);
-});
+let score = 0;
+
+function spawnApple(){
+
+  let apple = document.createElement("div");
+  apple.className = "apple bite1";
+
+  // véletlen pozíció
+  apple.style.left = Math.random()*260 + "px";
+  apple.style.top = Math.random()*260 + "px";
+
+  let leaf = document.createElement("div");
+  leaf.className = "leaf";
+  apple.appendChild(leaf);
+
+  let bites = 0;
+
+  apple.onclick = () => {
+    bites++;
+    apple.classList.remove("bite1","bite2","bite3");
+
+    if(bites===1) apple.classList.add("bite2");
+    else if(bites===2) apple.classList.add("bite3");
+    else{
+      apple.classList.add("gone");
+      score++;
+      scoreText.textContent = "Almák megevve: " + score;
+
+      setTimeout(()=>{
+        apple.remove();
+        spawnApple();
+      },300);
+    }
+  };
+
+  game.appendChild(apple);
+}
+
+// első alma
+spawnApple();
 </script>
 
 </body>
