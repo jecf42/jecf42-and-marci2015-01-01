@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>Alma evős játék</title>
+<title>Alma játék mentéssel</title>
 
 <style>
 body{
@@ -73,21 +73,30 @@ body{
 <body>
 
 <div id="game">
-  <div id="score">Almák megevve: 0</div>
+  <div id="score"></div>
 </div>
 
 <script>
 const game = document.getElementById("game");
 const scoreText = document.getElementById("score");
 
-let score = 0;
+// ====== MENTÉS BETÖLTÉS ======
+let score = localStorage.getItem("almaScore");
 
+if(score === null){
+  score = 0;
+}else{
+  score = parseInt(score);
+}
+
+scoreText.textContent = "Almák megevve: " + score;
+
+// ====== ALMA SPAWN ======
 function spawnApple(){
 
   let apple = document.createElement("div");
   apple.className = "apple bite1";
 
-  // véletlen pozíció
   apple.style.left = Math.random()*260 + "px";
   apple.style.top = Math.random()*260 + "px";
 
@@ -106,6 +115,10 @@ function spawnApple(){
     else{
       apple.classList.add("gone");
       score++;
+
+      // ===== MENTÉS =====
+      localStorage.setItem("almaScore", score);
+
       scoreText.textContent = "Almák megevve: " + score;
 
       setTimeout(()=>{
@@ -118,7 +131,6 @@ function spawnApple(){
   game.appendChild(apple);
 }
 
-// első alma
 spawnApple();
 </script>
 
