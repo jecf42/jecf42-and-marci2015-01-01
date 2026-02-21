@@ -2,69 +2,107 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>Alma</title>
+<title>Szebb Alma</title>
 
 <style>
-  body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:#e8f5e9;
-    font-family:sans-serif;
-  }
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at center,#e8f5e9,#a5d6a7);
+  overflow:hidden;
+}
 
-  .alma{
-    position:relative;
-    width:150px;
-    height:150px;
-    background:radial-gradient(circle at 40% 35%, #ff4d4d, #b30000);
-    border-radius: 50% 50% 45% 45%;
-    cursor:pointer;
-    transition: transform 0.3s ease;
-  }
+/* ALMA TEST */
+.apple{
+  position:relative;
+  width:180px;
+  height:180px;
+  background:
+    radial-gradient(circle at 35% 30%, #ff8a80 0%, #d32f2f 40%, #7f0000 100%);
+  border-radius:50% 50% 45% 45%;
+  box-shadow:
+    inset -20px -30px 40px rgba(0,0,0,0.4),
+    0 20px 40px rgba(0,0,0,0.3);
+  cursor:pointer;
+  transition:transform 0.1s;
+}
 
-  /* szár */
-  .alma::before{
-    content:"";
-    position:absolute;
-    width:10px;
-    height:40px;
-    background:#5c3a21;
-    top:-30px;
-    left:70px;
-    border-radius:4px;
-  }
+/* FÉNY */
+.apple::after{
+  content:"";
+  position:absolute;
+  width:60px;
+  height:80px;
+  background:radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0));
+  border-radius:50%;
+  top:30px;
+  left:40px;
+  transform:rotate(-20deg);
+  animation:shine 3s infinite alternate;
+}
 
-  /* levél */
-  .level{
-    position:absolute;
-    width:50px;
-    height:25px;
-    background:#2e7d32;
-    border-radius:50%;
-    top:-20px;
-    left:85px;
-    transform:rotate(-25deg);
-  }
+/* SZÁR */
+.apple::before{
+  content:"";
+  position:absolute;
+  width:14px;
+  height:50px;
+  background:linear-gradient(#6d4c41,#3e2723);
+  top:-40px;
+  left:83px;
+  border-radius:6px;
+}
+
+/* LEVÉL */
+.leaf{
+  position:absolute;
+  width:80px;
+  height:40px;
+  background:linear-gradient(to right,#1b5e20,#66bb6a);
+  border-radius:50%;
+  top:-30px;
+  left:100px;
+  transform:rotate(-35deg);
+  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3);
+}
+
+/* FÉNY PULZÁLÁS */
+@keyframes shine{
+  from{opacity:0.6;}
+  to{opacity:1;}
+}
+
+/* RÁZÁS */
+@keyframes shake{
+  0%{transform:rotate(0deg);}
+  25%{transform:rotate(-5deg);}
+  50%{transform:rotate(5deg);}
+  75%{transform:rotate(-3deg);}
+  100%{transform:rotate(0deg);}
+}
+
+.shake{
+  animation:shake 0.3s;
+}
 </style>
 </head>
 
 <body>
 
-<div class="alma" id="alma">
-  <div class="level"></div>
+<div class="apple" id="apple">
+  <div class="leaf"></div>
 </div>
 
 <script>
-  const alma = document.getElementById("alma");
+const apple = document.getElementById("apple");
 
-  alma.addEventListener("click", () => {
-    alma.style.transform = "rotate(" + (Math.random()*30-15) + "deg) scale(1.1)";
-    setTimeout(()=> {
-      alma.style.transform = "rotate(0deg) scale(1)";
-    }, 300);
-  });
+apple.addEventListener("click", ()=>{
+  apple.classList.add("shake");
+  setTimeout(()=>apple.classList.remove("shake"),300);
+});
 </script>
 
 </body>
